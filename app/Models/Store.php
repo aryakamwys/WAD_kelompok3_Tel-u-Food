@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Observers\StoreObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+
+#[ObservedBy(StoreObserver::class)]
 
 class Store extends Model
 {
     protected $fillable = [
-        'user_id',
         'logo',
         'name',
         'slug',

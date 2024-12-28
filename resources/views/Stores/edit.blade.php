@@ -1,10 +1,10 @@
 <x-app-layout>
 
-    @slot('title', 'Create a restauran')
+    @slot('title', 'Edit Restaurant')
 
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create Restaurant') }}
+            {{ __('Edit') }}
         </h2>
     </x-slot>
 
@@ -14,11 +14,11 @@
     <x-card.header>
 
                 <x-card.title>
-                    Create a restaurant
+                    edit restaurant
                 </x-card.title>
                 <x-card.description>
 
-                    Fill the form below to create a restaurant
+                    edit the {{ $store->name }}
 
                 </x-card.description>
 
@@ -26,7 +26,9 @@
 
             <x-card.content>
 
-                <form action="{{ route('stores.store') }}" method="post" enctype="multipart/form-data" class="[&>div]:mb-6" novalidate>
+                <form action="{{ route('stores.update', $store) }}" method="post" enctype="multipart/form-data" class="[&>div]:mb-6" novalidate>
+
+                    @method('put')
                 
                     @csrf
 
@@ -38,19 +40,19 @@
 
                     <div>
                         <x-input-label for="name" :value="__('Name')" />
-                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required/>
+                        <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', $store->name)" required/>
                         <x-input-error :messages="$errors->get('name')" class="mt-2" />
                     </div>
 
                     <div>
                         <x-input-label for="description" :value="__('Description')" />
-                        <x-textarea id="description" class="block mt-1 w-full" name="description" required>{{ old('description') }}</x-textarea>
+                        <x-textarea id="description" class="block mt-1 w-full" name="description" required>{{ old('description', $store->description) }}</x-textarea>
                         <x-input-error :messages="$errors->get('description')" class="mt-2" />
                     </div>
 
                     <x-primary-button class="mt-4">
 
-                        Create
+                        Update
 
                     </x-primary-button>
                 
