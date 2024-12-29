@@ -23,4 +23,9 @@ class Store extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function makanan()
+    {
+        return $this->hasMany(Makanan::class);
+    }
 }

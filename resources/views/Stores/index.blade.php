@@ -20,36 +20,14 @@
         
             <img src="{{ asset('storage/' . $store->logo) }}" alt="{{ $store->name }}" class="size-16 rounded-lg">
 
-                <x-card.header>
-
+            <x-card.header>
                     <x-card.title>{{ $store->name }}</x-card.title>
-        
-                    <x-card.description>
-                
-                        {{ $store->description }}
-                
-                    </x-card.description>
+                    <x-card.description>{{ $store->description }}</x-card.description>
 
-                    <!-- @if($store->user_id === auth()->user()->id) -->
-
-                        <a href="{{ route('stores.edit', $store) }}"class="underline text-blue-600">
-
-                            Edit
-
-                        </a>
-                        
-                    <!-- @endif -->
-
+                    <a href="{{ route('stores.show', $store) }}" class="underline text-blue-600">Lihat Makanan</a>
                 </x-card.header>
-             
             </x-card>
             @endforeach
-
-
-            
-
         </div>
-
     </x-container>
-
 </x-app-layout>

@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Makanan;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class MakananController extends Controller
 {
     // Menampilkan daftar makanan
-    public function index()
+    public function index(Store $store)
     {
-        $makanans = Makanan::all(); // Mengambil semua data makanan
-        return view('makanan.index', compact('makanans')); // Menampilkan view dengan data makanan
+        $makanans = $store->makanan;  // Mengambil makanan yang terhubung dengan store
+        return view('makanan.index', compact('makanans', 'store')); // Menampilkan view dengan data makanan
     }
 
     public function edit($id)
@@ -21,13 +22,13 @@ class MakananController extends Controller
     }
 
     // Menampilkan form untuk membuat makanan baru
-    public function create()
+    public function create(Store $store)
     {
-        return view('makanan.create');
+        return view('makanan.create', compact('store'));
     }
 
     // Menyimpan makanan baru ke database
-    public function store(Request $request)
+    public function store(Request $request, Store $store)
     {
         $request->validate([
             'nama' => 'required|string|max:255',
@@ -40,8 +41,8 @@ class MakananController extends Controller
             $data['gambar'] = $request->file('gambar')->store('images', 'public');
         }
 
-        Makanan::create($data);
-        return redirect()->route('makanan.index')->with('success', 'Makanan berhasil ditambahkan');
+        $store->makanan()->create($data);  // Menyimpan makanan yang terkait dengan store
+        return redirect()->route('stores.makanan.index', $store)->with('success', 'Makanan berhasil ditambahkan');
     }
 
     // Menampilkan form untuk mengedit makanan
@@ -74,4 +75,6 @@ class MakananController extends Controller
         $makanan->delete();
         return redirect()->route('makanan.index')->with('success', 'Makanan berhasil dihapus');
     }
+
+    
 }

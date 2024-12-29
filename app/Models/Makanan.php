@@ -18,4 +18,9 @@ class Makanan extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

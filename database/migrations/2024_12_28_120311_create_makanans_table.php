@@ -20,6 +20,11 @@ return new class extends Migration
             $table->foreignId('restoran_id')->constrained()->onDelete('cascade'); // Menambahkan relasi ke restoran
             $table->timestamps();
         });
+
+        Schema::table('makanan', function (Blueprint $table) {
+            $table->unsignedBigInteger('store_id');  // Kolom untuk relasi Store
+            $table->foreign('store_id')->references('id')->on('stores')->onDelete('cascade');
+        });
     }
     
     public function down()

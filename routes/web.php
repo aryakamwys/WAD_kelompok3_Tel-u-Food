@@ -3,6 +3,15 @@
 use App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MakananController;
+use App\Http\Controllers\StoreController;
+
+// Routing untuk Store
+Route::resource('stores', StoreController::class);
+
+// Routing untuk Makanan yang terhubung dengan Store
+Route::resource('stores.makanan', MakananController::class);  // Routing untuk makanan terkait store
+
+
 
 Route::resource('makanan', MakananController::class);
 
