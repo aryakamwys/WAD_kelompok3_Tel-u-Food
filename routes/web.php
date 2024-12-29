@@ -2,26 +2,39 @@
 
 use App\Http\Controllers;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MakananController;
-use App\Http\Controllers\StoreController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\FoodController;
+use App\Http\Controllers\BeverageController;
 
-// Routing untuk Store
-Route::resource('stores', StoreController::class);
+// Public routes
+Route::get('/', [PublicController::class, 'home'])->name('home');
+Route::get('/explore/restaurants', [PublicController::class, 'restaurants'])->name('restaurants.explore');
+Route::get('/explore/restaurants/{restaurant}', [PublicController::class, 'restaurantDetail'])->name('explore.restaurants.show');
+Route::get('/explore/menus', [PublicController::class, 'menus'])->name('menus.explore');
 
-// Routing untuk Makanan yang terhubung dengan Store
-Route::resource('stores.makanan', MakananController::class);  // Routing untuk makanan terkait store
+// Admin routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [PublicController::class, 'home'])->name('dashboard');
+    Route::get('/dashboard', [PublicController::class, 'home'])->name('home');
+    Route::resource('banners', BannerController::class);
+    Route::resource('restaurants', RestaurantController::class);
 
+    Route::get('/foods', [FoodController::class, 'index'])->name('foods.index');
+    Route::get('/foods/create', [FoodController::class, 'create'])->name('foods.create');
+    Route::post('/foods', [FoodController::class, 'store'])->name('foods.store');
+    Route::get('/foods/{menu}/edit', [FoodController::class, 'edit'])->name('foods.edit');
+    Route::put('/foods/{menu}', [FoodController::class, 'update'])->name('foods.update');
+    Route::delete('/foods/{menu}', [FoodController::class, 'destroy'])->name('foods.destroy');
 
-
-Route::resource('makanan', MakananController::class);
-
-
-Route::get('/', Controllers\HomeController::class)->name('home');
-
-Route::get('/dashboard', Controllers\DashboardController::class)->middleware(['auth', 'verified'])->name('dashboard');
-
-
-Route::resource('stores', Controllers\StoreController::class);
+    Route::get('/beverages', [BeverageController::class, 'index'])->name('beverages.index');
+    Route::get('/beverages/create', [BeverageController::class, 'create'])->name('beverages.create');
+    Route::post('/beverages', [BeverageController::class, 'store'])->name('beverages.store');
+    Route::get('/beverages/{menu}/edit', [BeverageController::class, 'edit'])->name('beverages.edit');
+    Route::put('/beverages/{menu}', [BeverageController::class, 'update'])->name('beverages.update');
+    Route::delete('/beverages/{menu}', [BeverageController::class, 'destroy'])->name('beverages.destroy');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [Controllers\ProfileController::class, 'edit'])->name('profile.edit');
@@ -29,4 +42,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
